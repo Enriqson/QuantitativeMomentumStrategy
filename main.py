@@ -79,7 +79,7 @@ for time_period in time_periods:
     abs_col = f'{time_period} Return'
     percent_col = f'{time_period} Return Percentile'
     final_dataframe[abs_col] = final_dataframe[abs_col].fillna(0.0)
-    final_dataframe[percent_col] = final_dataframe[abs_col].apply(lambda x:score(final_dataframe[abs_col],x))
+    final_dataframe[percent_col] = final_dataframe[abs_col].apply(lambda x:score(final_dataframe[abs_col],x)/100)
 
 for row in final_dataframe.index:
     momentum_percentiles = []
@@ -155,19 +155,28 @@ float_format = writer.book.add_format(
     }
 )
 
+percent_format = writer.book.add_format(
+    {
+        'num_format':'0.0%',
+        'font_color':font_color,
+        'bg_color':background_color,
+        'border': 1
+    }
+)
+
 column_formats={
     'A':['Ticker',string_format],
     'B':['Price',dollar_format],
     'C':['Number of Shares to Buy',integer_format],
     'D':['Momentum Score',float_format],
-    'E':['1 year Return',float_format],
-    'F':['1 year Return Percentile',float_format],
-    'G':['6 month Return',float_format],
-    'H':['6 month Return Percentile',float_format],
-    'I':['3 month Return',float_format],
-    'J':['3 month Return Percentile',float_format],
-    'K':['1 month Return',float_format],
-    'L':['1 month Return Percentile',float_format],
+    'E':['1 year Return',percent_format],
+    'F':['1 year Return Percentile',percent_format],
+    'G':['6 month Return',percent_format],
+    'H':['6 month Return Percentile',percent_format],
+    'I':['3 month Return',percent_format],
+    'J':['3 month Return Percentile',percent_format],
+    'K':['1 month Return',percent_format],
+    'L':['1 month Return Percentile',percent_format],
 }
 
 for column in column_formats.keys():
